@@ -13,14 +13,13 @@ export default function Create() {
         district_code: "",
         village_code: "",
         description: "",
+        location: "",
     });
 
-    // State untuk opsi cascading select
     const [cities, setCities] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [villages, setVillages] = useState([]);
 
-    // Load kota/kabupaten saat province_code berubah
     useEffect(() => {
         if (form.province_code) {
             fetch(`/api/indonesia/cities?province_code=${form.province_code}`)
@@ -49,7 +48,6 @@ export default function Create() {
         }
     }, [form.province_code]);
 
-    // Load kecamatan saat city_code berubah
     useEffect(() => {
         if (form.city_code) {
             fetch(`/api/indonesia/districts?city_code=${form.city_code}`)
@@ -74,7 +72,6 @@ export default function Create() {
         }
     }, [form.city_code]);
 
-    // Load desa/kelurahan saat district_code berubah
     useEffect(() => {
         if (form.district_code) {
             fetch(`/api/indonesia/villages?district_code=${form.district_code}`)
@@ -151,7 +148,7 @@ export default function Create() {
                         </select>
                     </div>
 
-                    {/* Cascading Lokasi */}
+                    {/* Cascading lokasi */}
                     <div>
                         <label className="label">
                             <span className="label-text">Provinsi</span>
@@ -257,6 +254,22 @@ export default function Create() {
 
                     <div>
                         <label className="label">
+                            <span className="label-text">
+                                Lokasi (alamat lengkap)
+                            </span>
+                        </label>
+                        <input
+                            type="text"
+                            className="input input-bordered w-full"
+                            value={form.location}
+                            onChange={(e) =>
+                                setForm({ ...form, location: e.target.value })
+                            }
+                        />
+                    </div>
+
+                    <div>
+                        <label className="label">
                             <span className="label-text">Deskripsi</span>
                         </label>
                         <textarea
@@ -268,7 +281,7 @@ export default function Create() {
                                     description: e.target.value,
                                 })
                             }
-                        ></textarea>
+                        />
                     </div>
 
                     <div className="flex gap-2">

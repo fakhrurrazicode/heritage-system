@@ -15,18 +15,15 @@ class HeritageController extends Controller
     {
         $query = Heritage::with('type')->latest();
 
-        // Filter berdasarkan jenis cagar budaya
         if ($request->heritage_type_id) {
             $query->where('heritage_type_id', $request->heritage_type_id);
         }
 
-        // Search nama cagar budaya
         if ($request->search) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
         $heritages = $query->paginate(10)->appends($request->only(['search', 'heritage_type_id']));
-
         $types = HeritageType::orderBy('name')->get();
 
         return Inertia::render('Heritage/Index', [
@@ -56,8 +53,6 @@ class HeritageController extends Controller
             'heritage_type_id' => 'required|exists:heritage_types,id',
             'description' => 'nullable|string',
             'location' => 'nullable|string|max:255',
-
-            // Validasi lokasi
             'province_code' => 'nullable|string|size:2|exists:indonesia_provinces,code',
             'city_code' => 'nullable|string|size:4|exists:indonesia_cities,code',
             'district_code' => 'nullable|string|size:7|exists:indonesia_districts,code',
@@ -92,8 +87,6 @@ class HeritageController extends Controller
             'heritage_type_id' => 'required|exists:heritage_types,id',
             'description' => 'nullable|string',
             'location' => 'nullable|string|max:255',
-
-            // Validasi lokasi
             'province_code' => 'nullable|string|size:2|exists:indonesia_provinces,code',
             'city_code' => 'nullable|string|size:4|exists:indonesia_cities,code',
             'district_code' => 'nullable|string|size:7|exists:indonesia_districts,code',
